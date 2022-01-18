@@ -10,4 +10,11 @@ fantasy:
         TE: 2
         K: 1
         D: 1
-
+    lineup-generator:
+      brute-force:
+        debug: false
+        number-to-return: 5
+      max-points:
+        debug: false
+      value:
+        debug: false

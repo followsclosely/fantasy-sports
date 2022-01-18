@@ -41,7 +41,6 @@ public class BruteForceLineupGenerator implements LineupGenerator {
 
         for (Player qb : pool.getPlayers("QB")) {
             Roster roster = new Roster().addPlayer(qb);
-
             for (Player rb1 : pool.getPlayers("RB")) {
                 if (roster.canAddPlayer(rb1, null)) {
                     Roster rosterRb1 = roster.getCopy().addPlayer(rb1);
