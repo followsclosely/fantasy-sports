@@ -9,6 +9,7 @@ public class Roster implements Comparable<Roster> {
     private List<Player> players = new ArrayList<>();
 
     public boolean canAddPlayer(Player player, RosterSettings rosterSettings) {
+
         // only one player per team
         for (Player playerOnRoster : players) {
             if (player.getTeam().equals(playerOnRoster.getTeam())) {
@@ -34,6 +35,7 @@ public class Roster implements Comparable<Roster> {
     public Roster addPlayer(Player player) {
         points += player.getPoints();
         players.add(player);
+        Collections.sort(players);
         return this;
     }
 

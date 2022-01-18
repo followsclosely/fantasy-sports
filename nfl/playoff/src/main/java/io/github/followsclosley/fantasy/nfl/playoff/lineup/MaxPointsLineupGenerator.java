@@ -11,7 +11,7 @@ import java.util.List;
  * roster is filled.
  */
 @Component
-public class BestLineupGenerator implements LineupGenerator {
+public class MaxPointsLineupGenerator implements LineupGenerator {
     public ArrayList<Roster> generate(PlayerPool pool, RosterSettings rosterSettings) {
         Roster roster = new Roster();
 

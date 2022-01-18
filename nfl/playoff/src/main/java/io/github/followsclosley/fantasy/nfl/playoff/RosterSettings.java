@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Contains all the settings needed to generate an optimal roster.
+ */
 @Component
 @EnableConfigurationProperties
 @ConfigurationProperties(prefix = "fantasy.nfl.roster")

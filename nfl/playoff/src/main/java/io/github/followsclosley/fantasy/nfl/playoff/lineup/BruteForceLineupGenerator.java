@@ -1,30 +1,40 @@
 package io.github.followsclosley.fantasy.nfl.playoff.lineup;
 
 import io.github.followsclosley.fantasy.nfl.playoff.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
 
+/**
+ * This LineupGenerator uses brute force and generates all possible lineups for the
+ * following RosterSettings:
+ * <ul>
+ *   <li>QB: 1</li>
+ *   <li>RB: 2</li>
+ *   <li>WR: 2</li>
+ *   <li>TE: 2</li>
+ *   <li>K: 1</li>
+ *   <li>D: 1</li>
+ * </ul>
+ * <p>
+ * Note that this implementation does not use the RosterSettings passed in. It is hard coded
+ * to the above 9 positions.
+ */
 @Component
-public class SimpleLineupGenerator implements LineupGenerator {
-    //12QB*11RB*10RB*9WR*8WR*7WR*6TE*5DT*4K*(only 80% of the lineups are unique)
-    double estimatedTotal = 12 * 11 * 10 * 9 * 8 * 7 * 6 * 5 * 4 * .8;
-    private int numberToRetrun = 1;
+public class BruteForceLineupGenerator implements LineupGenerator {
 
-    public void setNumberToRetrun(int numberToRetrun) {
-        this.numberToRetrun = numberToRetrun;
-    }
-
-    public void setEstimatedTotal(double estimatedTotal) {
-        this.estimatedTotal = estimatedTotal;
-    }
+    @Value("${fantasy.nfl.lineup-generator.brute-force.number-to-return:1}")
+    private final int numberToReturn = 1;
+    @Value("${fantasy.nfl.lineup-generator.brute-force.debug:false}")
+    private final boolean debug = false;
+    //9QB*8RB*7RB*6WR*6WR*6WR*6TE*3DT*3K*(only 75% of the lineups are unique)
+    double estimatedTotal = 9 * 8 * 7 * 6 * 6 * 6 * 6 * 3 * 3 * .75;
 
     public ArrayList<Roster> generate(PlayerPool pool, RosterSettings rosterSettings) {
         int total = 0;
 
         List<Player> fxs = new ArrayList<>(pool.getPlayers("WR"));
-        //List<Player> fxs = new ArrayList<>(pool.getPlayers("RB"));
-        //List<Player> fxs = new ArrayList<>(pool.getPlayers("TE"));
 
         ArrayList<Roster> sortedRosters = new ArrayList<>();
         Set<String> unique = new HashSet<>();
@@ -62,9 +72,10 @@ public class SimpleLineupGenerator implements LineupGenerator {
 
                                                                             if (++total % 1000000 == 0) {
                                                                                 Collections.sort(sortedRosters);
-                                                                                //Only keep the top {numberToRetrun}.
-                                                                                sortedRosters.subList(numberToRetrun, sortedRosters.size()).clear();
-                                                                                System.out.print(String.format("\r  %s %.2f%% %d %n", new Date(), ((total / estimatedTotal) * 100), total));
+                                                                                sortedRosters.subList(numberToReturn, sortedRosters.size()).clear();
+                                                                                if (debug) {
+                                                                                    System.out.print(String.format("\r  %s %.2f%% %d %n", new Date(), ((total / estimatedTotal) * 100), total));
+                                                                                }
                                                                             }
                                                                         }
                                                                     }
@@ -85,8 +96,10 @@ public class SimpleLineupGenerator implements LineupGenerator {
         }
 
         Collections.sort(sortedRosters);
-        sortedRosters.subList(numberToRetrun, sortedRosters.size()).clear();
-        System.out.format("%s %.2f%% %d %n", new Date(), ((total / estimatedTotal) * 100), total);
+        sortedRosters.subList(numberToReturn, sortedRosters.size()).clear();
+        if (debug) {
+            System.out.format("%s %.2f%% %d %n", new Date(), ((total / estimatedTotal) * 100), total);
+        }
 
         return sortedRosters;
     }

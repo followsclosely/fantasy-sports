@@ -9,7 +9,6 @@ import org.springframework.core.io.Resource;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,7 +21,6 @@ import java.util.Set;
  *   Tom Brady,NE,QB,58.71
  * </pre></p>
  * <p>
- * TODO: Extract Interface if needed.
  *
  * @author M.L. Wilson
  */
@@ -51,8 +49,7 @@ public class PlayerPoolLoader {
 
                     String key = player.getPosition() + player.getTeam();
 
-                    // Only add one player per team for every position is
-                    // needed.
+                    // Only add the best player per team for every position.
                     if (!lock.contains(key)) {
                         int size = pool.getPlayers(player.getPosition()).size();
                         if (size < rosterSettings.getSize()) {
@@ -66,7 +63,7 @@ public class PlayerPoolLoader {
 
         for (String position : pool.getPositions()) {
             List<Player> players = pool.getPlayers(position);
-            Collections.sort(players);
+            players.sort((p1, p2) -> Float.compare(p2.getPoints(), p1.getPoints()));
         }
 
         return pool;
