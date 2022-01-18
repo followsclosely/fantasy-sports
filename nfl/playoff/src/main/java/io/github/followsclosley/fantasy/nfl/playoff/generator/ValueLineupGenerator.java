@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -14,7 +15,7 @@ public class ValueLineupGenerator implements RosterGenerator {
     @Value("${fantasy.nfl.roster-generator.value.debug:false}")
     private final boolean debug = false;
 
-    public ArrayList<Roster> generate(PlayerPool pool, RosterSettings rosterSettings) {
+    public List<Roster> generate(PlayerPool pool, RosterSettings rosterSettings) {
         Roster roster = new Roster();
 
         while (true) {
@@ -28,9 +29,7 @@ public class ValueLineupGenerator implements RosterGenerator {
             }
         }
 
-        ArrayList<Roster> rosters = new ArrayList<>();
-        rosters.add(roster.orderPlayers());
-        return rosters;
+        return Arrays.asList(roster.orderPlayers());
     }
 
 

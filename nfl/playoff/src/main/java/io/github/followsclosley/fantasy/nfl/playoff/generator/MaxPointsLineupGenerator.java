@@ -3,7 +3,7 @@ package io.github.followsclosley.fantasy.nfl.playoff.generator;
 import io.github.followsclosley.fantasy.nfl.playoff.*;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -12,7 +12,7 @@ import java.util.List;
  */
 @Component
 public class MaxPointsLineupGenerator implements RosterGenerator {
-    public ArrayList<Roster> generate(PlayerPool pool, RosterSettings rosterSettings) {
+    public List<Roster> generate(PlayerPool pool, RosterSettings rosterSettings) {
         Roster roster = new Roster();
 
         Player best = getBestAvailable(pool, roster, rosterSettings);
@@ -21,9 +21,7 @@ public class MaxPointsLineupGenerator implements RosterGenerator {
             best = getBestAvailable(pool, roster, rosterSettings);
         }
 
-        ArrayList<Roster> rosters = new ArrayList<>();
-        rosters.add(roster.orderPlayers());
-        return rosters;
+        return Arrays.asList(roster.orderPlayers());
     }
 
     public Player getBestAvailable(PlayerPool pool, Roster roster, RosterSettings rosterSettings) {
