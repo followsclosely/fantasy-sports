@@ -1,0 +1,102 @@
+#Player,Team,Position,Points
+Carolina D/ST,CAR,D,54
+Denver D/ST,DEN,D,48
+Kansas City D/ST,KC,D,29
+Pittsburgh D/ST,PIT,D,26
+Green Bay D/ST,GB,D,19
+Seattle D/ST,SEA,D,12
+New England D/ST,NE,D,12
+Cincinnati D/ST,CIN,D,12
+Minnesota D/ST,MIN,D,10
+Washington D/ST,WSH,D,5
+Houston D/ST,HOU,D,5
+Arizona D/ST,ARI,D,-4
+#,#,#,#
+Brandon McManus,DEN,K,35
+Chris Boswell,PIT,K,22
+Graham Gano,CAR,K,21
+Cairo Santos,KC,K,20
+Mason Crosby,GB,K,16
+Stephen Gostkowski,NE,K,12
+Steven Hauschka,SEA,K,10
+Chandler Catanzaro,ARI,K,9
+Blair Walsh,MIN,K,8
+Mike Nugent,CIN,K,4
+Dustin Hopkins,WSH,K,1
+Nick Novak,HOU,K,0
+#,#,#,#
+Cam Newton    ,CAR,QB,75.6
+Tom Brady,NE,QB,58.71
+Aaron Rodgers,GB,QB,51.84
+Russell Wilson,SEA,QB,50.28
+Alex Smith,KC,QB,45.88
+Peyton Manning,DEN,QB,45.56
+Ben Roethlisberger,PIT,QB,40.72
+Carson Palmer,ARI,QB,39.36
+Kirk Cousins,WSH,QB,31.03
+A.J. McCarron,CIN,QB,17.05
+Teddy Bridgewater,MIN,QB,11.51
+Brian Hoyer,HOU,QB,0.34
+#,#,#,#
+C.J. Anderson,DEN,RB,48.3
+Jonathan Stewart,CAR,RB,44.7
+David Johnson,ARI,RB,41.6
+Fitzgerald Toussaint,PIT,RB,26.9
+Eddie Lacy,GB,RB,21.4
+James Starks,GB,RB,21.2
+Charcandrick West,KC,RB,20.1
+James White,NE,RB,17
+Jeremy Hill,CIN,RB,14.7
+Alfred Blue,HOU,RB,9.9
+Steven Jackson,NE,RB,9.6
+Christine Michael,SEA,RB,9.4
+Ronnie Hillman,DEN,RB,7.1
+Brandon Bolden,NE,RB,6.8
+Jordan Todman,PIT,RB,6.5
+Adrian Peterson,MIN,RB,5.8
+Marshawn Lynch,SEA,RB,5.5
+Alfred Morris,WSH,RB,5
+Giovani Bernard,CIN,RB,3
+#,#,#,#
+Rob Gronkowski,NE,TE,55.7
+Greg Olsen,CAR,TE,45.1
+Travis Kelce,KC,TE,29.1
+Jordan Reed,WSH,TE,27
+Owen Daniels,DEN,TE,23.1
+Richard Rodgers,GB,TE,12.6
+Tyler Eifert,CIN,TE,10.8
+Heath Miller,PIT,TE,4.4
+Kyle Rudolph,MIN,TE,3.4
+Tyler Kroft,CIN,TE,0
+XX_SEA_TE,SEA,TE,0
+XX_HOU_TE,HOU,TE,0
+XX_ARI_TE,ARI,TE,0
+#,#,#,#
+Martavis Bryant,PIT,WR,46.7
+Emmanuel Sanders,DEN,WR,39
+Jermaine Kearse,SEA,WR,38.8
+Larry Fitzgerald,ARI,WR,38.6
+Philly Brown,CAR,WR,37.5
+Julian Edelman,NE,WR,33.4
+Doug Baldwin,SEA,WR,31.4
+Ted Ginn,CAR,WR,27.9
+Michael Floyd,ARI,WR,24.3
+Tyler Lockett,SEA,WR,21
+Antonio Brown,PIT,WR,18.9
+A.J. Green,CIN,WR,18.1
+John Brown,ARI,WR,17.5
+Randall Cobb,GB,WR,15.2
+James Jones,GB,WR,15.1
+Davante Adams,GB,WR,14.8
+DeAndre Hopkins,HOU,WR,12.9
+Danny Amendola,NE,WR,12.7
+Pierre Garcon,WSH,WR,12
+Demaryius Thomas,DEN,WR,11.8
+Markus Wheaton,PIT,WR,10.3
+Jeremy Maclin,KC,WR,10.2
+Devin Funchess,CAR,WR,10.1
+Marvin Jones,CIN,WR,7.2
+Stefon Diggs,MIN,WR,7.2
+DeSean Jackson,WSH,WR,3.7
+Jaelen Strong,HOU,WR,2.7
+Mike Wallace,MIN,WR,2
