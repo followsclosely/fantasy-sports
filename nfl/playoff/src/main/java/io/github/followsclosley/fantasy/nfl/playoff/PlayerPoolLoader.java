@@ -63,7 +63,7 @@ public class PlayerPoolLoader {
 
         for (String position : pool.getPositions()) {
             List<Player> players = pool.getPlayers(position);
-            players.sort((p1, p2) -> Float.compare(p2.getPoints(), p1.getPoints()));
+            players.sort(Player::sortByPoints);
         }
 
         return pool;

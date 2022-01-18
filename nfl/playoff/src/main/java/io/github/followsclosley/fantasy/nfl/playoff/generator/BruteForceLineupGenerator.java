@@ -1,4 +1,4 @@
-package io.github.followsclosley.fantasy.nfl.playoff.lineup;
+package io.github.followsclosley.fantasy.nfl.playoff.generator;
 
 import io.github.followsclosley.fantasy.nfl.playoff.*;
 import org.springframework.beans.factory.annotation.Value;
@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 /**
- * This LineupGenerator uses brute force and generates all possible lineups for the
+ * This RosterGenerator uses brute force and generates all possible lineups for the
  * following RosterSettings:
  * <ul>
  *   <li>QB: 1</li>
@@ -22,11 +22,11 @@ import java.util.*;
  * to the above 9 positions.
  */
 @Component
-public class BruteForceLineupGenerator implements LineupGenerator {
+public class BruteForceLineupGenerator implements RosterGenerator {
 
-    @Value("${fantasy.nfl.lineup-generator.brute-force.number-to-return:1}")
+    @Value("${fantasy.nfl.roster-generator.brute-force.number-to-return:1}")
     private final int numberToReturn = 1;
-    @Value("${fantasy.nfl.lineup-generator.brute-force.debug:false}")
+    @Value("${fantasy.nfl.roster-generator.brute-force.debug:false}")
     private final boolean debug = false;
     //9QB*8RB*7RB*6WR*6WR*6WR*6TE*3DT*3K*(only 75% of the lineups are unique)
     double estimatedTotal = 9 * 8 * 7 * 6 * 6 * 6 * 6 * 3 * 3 * .75;
@@ -70,7 +70,7 @@ public class BruteForceLineupGenerator implements LineupGenerator {
                                                                             }
 
                                                                             if (++total % 1000000 == 0) {
-                                                                                Collections.sort(sortedRosters);
+                                                                                sortedRosters.sort(Roster::sortByPoints);
                                                                                 sortedRosters.subList(numberToReturn, sortedRosters.size()).clear();
                                                                                 if (debug) {
                                                                                     System.out.print(String.format("\r  %s %.2f%% %d %n", new Date(), ((total / estimatedTotal) * 100), total));
@@ -94,8 +94,10 @@ public class BruteForceLineupGenerator implements LineupGenerator {
             }
         }
 
-        Collections.sort(sortedRosters);
+        sortedRosters.sort(Roster::sortByPoints);
         sortedRosters.subList(numberToReturn, sortedRosters.size()).clear();
+        sortedRosters.forEach(Roster::orderPlayers);
+
         if (debug) {
             System.out.format("%s %.2f%% %d %n", new Date(), ((total / estimatedTotal) * 100), total);
         }

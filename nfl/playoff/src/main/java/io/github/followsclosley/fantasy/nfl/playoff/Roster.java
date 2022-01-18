@@ -1,10 +1,9 @@
 package io.github.followsclosley.fantasy.nfl.playoff;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-public class Roster implements Comparable<Roster> {
+public class Roster {
     private float points;
     private List<Player> players = new ArrayList<>();
 
@@ -35,7 +34,11 @@ public class Roster implements Comparable<Roster> {
     public Roster addPlayer(Player player) {
         points += player.getPoints();
         players.add(player);
-        Collections.sort(players);
+        return this;
+    }
+
+    public Roster orderPlayers() {
+        this.players.sort(Player::sortByPoints);
         return this;
     }
 
@@ -44,6 +47,7 @@ public class Roster implements Comparable<Roster> {
         StringBuilder builder = new StringBuilder();
         builder.append("Points: ").append(String.format("%.2f", points)).append("\t");
 
+        List<Player> players = new ArrayList<>(this.players);
         for (Player player : players) {
             builder.append(player.getName()).append(" (").append(player.getPoints()).append(")\t");
         }
@@ -51,14 +55,13 @@ public class Roster implements Comparable<Roster> {
         return builder.toString();
     }
 
-    @Override
-    public int compareTo(Roster roster) {
+    public int sortByPoints(Roster roster) {
         return Float.compare(roster.points, points);
     }
 
     public String getUniqueKey() {
         //Sort the players so duplicate rosters are eliminated.
-        Collections.sort(players);
+        players.sort(Player::sortById);
 
         // Generate a new hashCode
         StringBuilder builder = new StringBuilder();

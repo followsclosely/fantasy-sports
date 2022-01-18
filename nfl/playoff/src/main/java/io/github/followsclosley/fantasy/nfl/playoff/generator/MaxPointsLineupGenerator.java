@@ -1,4 +1,4 @@
-package io.github.followsclosley.fantasy.nfl.playoff.lineup;
+package io.github.followsclosley.fantasy.nfl.playoff.generator;
 
 import io.github.followsclosley.fantasy.nfl.playoff.*;
 import org.springframework.stereotype.Component;
@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This LineupGenerator takes the highest scoring player available until the
+ * This RosterGenerator takes the highest scoring player available until the
  * roster is filled.
  */
 @Component
-public class MaxPointsLineupGenerator implements LineupGenerator {
+public class MaxPointsLineupGenerator implements RosterGenerator {
     public ArrayList<Roster> generate(PlayerPool pool, RosterSettings rosterSettings) {
         Roster roster = new Roster();
 
@@ -22,7 +22,7 @@ public class MaxPointsLineupGenerator implements LineupGenerator {
         }
 
         ArrayList<Roster> rosters = new ArrayList<>();
-        rosters.add(roster);
+        rosters.add(roster.orderPlayers());
         return rosters;
     }
 

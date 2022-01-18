@@ -7,7 +7,7 @@ import java.util.List;
  *
  * @author M.L. Wilson
  */
-public interface LineupGenerator {
+public interface RosterGenerator {
 
     /**
      * Given the player pool and roster limits, generate the optimal lineup.

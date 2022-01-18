@@ -1,4 +1,4 @@
-package io.github.followsclosley.fantasy.nfl.playoff.lineup;
+package io.github.followsclosley.fantasy.nfl.playoff.generator;
 
 import io.github.followsclosley.fantasy.nfl.playoff.*;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,9 +9,9 @@ import java.util.Collections;
 import java.util.List;
 
 @Component
-public class ValueLineupGenerator implements LineupGenerator {
+public class ValueLineupGenerator implements RosterGenerator {
 
-    @Value("${fantasy.nfl.lineup-generator.value.debug:false}")
+    @Value("${fantasy.nfl.roster-generator.value.debug:false}")
     private final boolean debug = false;
 
     public ArrayList<Roster> generate(PlayerPool pool, RosterSettings rosterSettings) {
@@ -29,7 +29,7 @@ public class ValueLineupGenerator implements LineupGenerator {
         }
 
         ArrayList<Roster> rosters = new ArrayList<>();
-        rosters.add(roster);
+        rosters.add(roster.orderPlayers());
         return rosters;
     }
 

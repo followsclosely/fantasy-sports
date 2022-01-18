@@ -19,20 +19,20 @@ public class FantasyNflPlayoffApplication {
     }
 
     /**
-     * Executes all the LineupGenerator instances that exists in the spring context.
+     * Executes all the RosterGenerator instances that exists in the spring context.
      *
-     * @param lineupGenerators All the LineupGenerator instances available
+     * @param rosterGenerators All the RosterGenerator instances available
      * @param playerPool       Available Players
      * @param rosterSettings   Roster Limits
-     * @return the code to run the LineupGenerator instances
+     * @return the code to run the RosterGenerator instances
      */
     @Bean
-    public CommandLineRunner getCommandLineRunner(List<LineupGenerator> lineupGenerators, PlayerPool playerPool, RosterSettings rosterSettings) {
+    public CommandLineRunner getCommandLineRunner(List<RosterGenerator> rosterGenerators, PlayerPool playerPool, RosterSettings rosterSettings) {
         return args -> {
-            for (LineupGenerator lineupGenerator : lineupGenerators) {
+            for (RosterGenerator rosterGenerator : rosterGenerators) {
                 long start = System.currentTimeMillis();
-                List<Roster> sortedRosters = lineupGenerator.generate(playerPool, rosterSettings);
-                System.out.println("(" + (System.currentTimeMillis() - start) + "ms) " + lineupGenerator.getClass().getName());
+                List<Roster> sortedRosters = rosterGenerator.generate(playerPool, rosterSettings);
+                System.out.println("(" + (System.currentTimeMillis() - start) + "ms) " + rosterGenerator.getClass().getName());
                 for (int i = 0, size = Math.min(sortedRosters.size(), 20); (i < size); i++) {
                     System.out.println(sortedRosters.get(i));
                 }

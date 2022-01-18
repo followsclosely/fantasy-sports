@@ -5,7 +5,7 @@ package io.github.followsclosley.fantasy.nfl.playoff;
  *
  * @author M.L. Wilson
  */
-public class Player implements Comparable<Player> {
+public class Player {
     private final String id;
     private final String name;
     private final float points;
@@ -25,10 +25,14 @@ public class Player implements Comparable<Player> {
         return name;
     }
 
-    @Override
-    public int compareTo(Player player) {
+    public int sortById(Player player) {
         return player.getId().compareTo(id);
     }
+
+    public int sortByPoints(Player player) {
+        return Float.compare(player.getPoints(), points);
+    }
+
 
     public String getName() {
         return name;
