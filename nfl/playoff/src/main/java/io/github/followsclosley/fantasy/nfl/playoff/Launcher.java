@@ -1,12 +1,13 @@
 package io.github.followsclosley.fantasy.nfl.playoff;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-public class Launcher {
+public class Launcher implements CommandLineRunner {
 	@Autowired
 	protected PlayerPool playerPool;
 
@@ -16,7 +17,8 @@ public class Launcher {
 	@Autowired
 	protected List<LineupGenerator> lineupGenerators;
 
-	public void execute() {
+	@Override
+	public void run(String... args) throws Exception {
 		for (LineupGenerator lineupGenerator : lineupGenerators) {
 			long start = System.currentTimeMillis();
 			List<Roster> sortedRosters = lineupGenerator.generate(playerPool, rosterSettings);
