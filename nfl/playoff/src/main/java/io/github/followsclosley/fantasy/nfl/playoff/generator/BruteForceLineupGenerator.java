@@ -70,7 +70,7 @@ public class BruteForceLineupGenerator implements RosterGenerator {
                                                                             }
 
                                                                             if (++total % 1000000 == 0) {
-                                                                                sortedRosters.sort(Roster::sortByPoints);
+                                                                                sortedRosters.sort(Comparator.comparing(Roster::getPoints).reversed());
                                                                                 sortedRosters.subList(numberToReturn, sortedRosters.size()).clear();
                                                                                 if (debug) {
                                                                                     System.out.print(String.format("\r  %s %.2f%% %d %n", new Date(), ((total / estimatedTotal) * 100), total));
@@ -94,7 +94,7 @@ public class BruteForceLineupGenerator implements RosterGenerator {
             }
         }
 
-        sortedRosters.sort(Roster::sortByPoints);
+        sortedRosters.sort(Comparator.comparing(Roster::getPoints).reversed());
         sortedRosters.subList(numberToReturn, sortedRosters.size()).clear();
         sortedRosters.forEach(Roster::orderPlayers);
 

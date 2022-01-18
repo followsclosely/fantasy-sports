@@ -3,7 +3,6 @@ package io.github.followsclosley.fantasy.nfl.playoff.generator;
 import io.github.followsclosley.fantasy.nfl.playoff.*;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -21,7 +20,7 @@ public class MaxPointsLineupGenerator implements RosterGenerator {
             best = getBestAvailable(pool, roster, rosterSettings);
         }
 
-        return Arrays.asList(roster.orderPlayers());
+        return List.of(roster.orderPlayers());
     }
 
     public Player getBestAvailable(PlayerPool pool, Roster roster, RosterSettings rosterSettings) {
