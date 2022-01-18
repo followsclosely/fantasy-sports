@@ -1,6 +1,7 @@
 package io.github.followsclosley.fantasy.nfl.playoff;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class Roster {
@@ -38,7 +39,7 @@ public class Roster {
     }
 
     public Roster orderPlayers() {
-        this.players.sort(Player::sortByPoints);
+        this.players.sort(Comparator.comparingDouble(Player::getPoints).reversed());
         return this;
     }
 
@@ -55,13 +56,9 @@ public class Roster {
         return builder.toString();
     }
 
-    public int sortByPoints(Roster roster) {
-        return Float.compare(roster.points, points);
-    }
-
     public String getUniqueKey() {
         //Sort the players so duplicate rosters are eliminated.
-        players.sort(Player::sortById);
+        players.sort(Comparator.comparing(Player::getId));
 
         // Generate a new hashCode
         StringBuilder builder = new StringBuilder();
@@ -77,6 +74,10 @@ public class Roster {
         roster.players = new ArrayList<>(players);
         roster.points = points;
         return roster;
+    }
+
+    public float getPoints() {
+        return points;
     }
 
     public List<Player> getPlayers() {

@@ -25,15 +25,6 @@ public class Player {
         return name;
     }
 
-    public int sortById(Player player) {
-        return player.getId().compareTo(id);
-    }
-
-    public int sortByPoints(Player player) {
-        return Float.compare(player.getPoints(), points);
-    }
-
-
     public String getName() {
         return name;
     }

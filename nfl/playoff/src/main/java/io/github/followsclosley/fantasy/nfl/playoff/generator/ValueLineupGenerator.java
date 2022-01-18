@@ -5,8 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Component
@@ -29,7 +28,7 @@ public class ValueLineupGenerator implements RosterGenerator {
             }
         }
 
-        return Arrays.asList(roster.orderPlayers());
+        return List.of(roster.orderPlayers());
     }
 
 
@@ -67,7 +66,7 @@ public class ValueLineupGenerator implements RosterGenerator {
             }
         }
 
-        Collections.sort(deltas);
+        deltas.sort(Comparator.comparingDouble(Delta::getValue).reversed());
         return deltas;
     }
 
@@ -80,7 +79,7 @@ public class ValueLineupGenerator implements RosterGenerator {
         System.out.println(roster + "\n");
     }
 
-    public static class Delta implements Comparable<Delta> {
+    public static class Delta {
         private final Player player;
         private float value;
         private Player nextBest;
@@ -104,11 +103,6 @@ public class ValueLineupGenerator implements RosterGenerator {
         public void setNextBest(Player nextBest) {
             this.nextBest = nextBest;
             this.value = player.getPoints() - nextBest.getPoints();
-        }
-
-        @Override
-        public int compareTo(Delta delta) {
-            return Float.compare(delta.getValue(), value);
         }
     }
 }

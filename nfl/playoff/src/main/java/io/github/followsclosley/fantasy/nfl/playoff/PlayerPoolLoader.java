@@ -9,6 +9,7 @@ import org.springframework.core.io.Resource;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -63,7 +64,7 @@ public class PlayerPoolLoader {
 
         for (String position : pool.getPositions()) {
             List<Player> players = pool.getPlayers(position);
-            players.sort(Player::sortByPoints);
+            players.sort(Comparator.comparingDouble(Player::getPoints).reversed());
         }
 
         return pool;
