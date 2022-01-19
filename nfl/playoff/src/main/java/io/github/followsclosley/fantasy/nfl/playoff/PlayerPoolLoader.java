@@ -17,10 +17,10 @@ import java.util.Set;
 /**
  * This PlayerPoolLoader loads the first player for each position per team.
  * Assumes the player file is sorted and in the following format:
- * <p><pre>
+ * <pre>
  *   <b>PlayerName,Team,Position,Points</b>
  *   Tom Brady,NE,QB,58.71
- * </pre></p>
+ * </pre>
  * <p>
  *
  * @author M.L. Wilson
