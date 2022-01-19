@@ -10,6 +10,10 @@ the league are as follows:
 - End of playoff stats are available
   here: https://github.com/followsclosely/fantasy-sports/tree/master/nfl/playoff/src/main/resources/stats
 
+The optimal lineup for the 2015 season is highliged in green. The greyed out players are eliminated as there is a higher
+scoring player from the same team at that position.
+![optimal](nfl/playoff/doc/optimal.png)
+
 | Class Name                                                                                                                                                                                                | Points |          QB1          |         RB1          |         RB2          |          WR1           |          WR2           |      RB/WR/TE       |          TE1          |          K          |           DT            |
 |:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:------:|:---------------------:|:--------------------:|:--------------------:|:----------------------:|:----------------------:|:-------------------:|:---------------------:|:-------------------:|:-----------------------:|
 | [BruteForceLineupGenerator](https://github.com/followsclosely/fantasy-sports/blob/master/nfl/playoff/src/main/java/io/github/followsclosley/fantasy/nfl/playoff/generator/BruteForceLineupGenerator.java) | 383.94 | Aaron Rodgers (51.84) | C.J. Anderson (48.3) | David Johnson (41.6) | Martavis Bryant (46.7) | Jermaine Kearse (38.8) | Jordan Reed (27.0) | Rob Gronkowski (55.7) | Cairo Santos (20.0) |  Carolina D/ST (54.0)   |
