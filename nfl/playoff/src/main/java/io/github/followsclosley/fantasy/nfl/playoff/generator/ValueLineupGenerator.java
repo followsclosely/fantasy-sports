@@ -8,12 +8,28 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * This RosterGenerator leverages Value-based drafting (VBD) to draft the optimal lineup.
+ * <p>
+ * Value-based drafting (VBD) is a strategy that assigns a value to every player by comparing that player's
+ * fantasy points to the fantasy points of a baseline player at the same position. A high VBD means a player
+ * offers strong incremental value at his position and is therefore valuable overall in fantasy.
+ * - https://www.fantasypros.com/
+ * </p>
+ */
 @Component
 public class ValueLineupGenerator implements RosterGenerator {
 
     @Value("${fantasy.nfl.roster-generator.value.debug:false}")
     private final boolean debug = false;
 
+    /**
+     * Uses Value-based drafting (VBD) to draft the optimal lineup.
+     *
+     * @param pool           Available Players
+     * @param rosterSettings Roster Limits
+     * @return Almost optimal roster
+     */
     public List<Roster> generate(PlayerPool pool, RosterSettings rosterSettings) {
         Roster roster = new Roster();
 

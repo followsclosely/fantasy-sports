@@ -13,7 +13,8 @@ import java.util.*;
  *   <li>QB: 1</li>
  *   <li>RB: 2</li>
  *   <li>WR: 2</li>
- *   <li>TE: 2</li>
+ *   <li>TE: 1</li>
+ *   <li>RB|WR|TE: 1</li>
  *   <li>K: 1</li>
  *   <li>D: 1</li>
  * </ul>
@@ -26,11 +27,20 @@ public class BruteForceLineupGenerator implements RosterGenerator {
 
     @Value("${fantasy.nfl.roster-generator.brute-force.number-to-return:1}")
     private final int numberToReturn = 1;
+
     @Value("${fantasy.nfl.roster-generator.brute-force.debug:false}")
     private final boolean debug = false;
+
     //9QB*8RB*7RB*6WR*6WR*6WR*6TE*3DT*3K*(only 75% of the lineups are unique)
     double estimatedTotal = 9 * 8 * 7 * 6 * 6 * 6 * 6 * 3 * 3 * .75;
 
+    /**
+     * Generates the optimal Roster.
+     *
+     * @param pool           Available Players
+     * @param rosterSettings Roster Limits
+     * @return The absolute optimal roster
+     */
     public ArrayList<Roster> generate(PlayerPool pool, RosterSettings rosterSettings) {
         int total = 0;
 

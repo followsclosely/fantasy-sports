@@ -11,6 +11,14 @@ import java.util.List;
  */
 @Component
 public class MaxPointsLineupGenerator implements RosterGenerator {
+
+    /**
+     * Drafts the highest scoring player available until the roster is filled.
+     *
+     * @param pool           Available Players
+     * @param rosterSettings Roster Limits
+     * @return Almost optimal roster
+     */
     public List<Roster> generate(PlayerPool pool, RosterSettings rosterSettings) {
         Roster roster = new Roster();
 
@@ -23,12 +31,19 @@ public class MaxPointsLineupGenerator implements RosterGenerator {
         return List.of(roster.orderPlayers());
     }
 
+    /**
+     * Returns the player with the highest fantasy points for a position that is still open
+     *
+     * @param pool           Available Players
+     * @param roster         The current roster being built
+     * @param rosterSettings The roster settings
+     * @return The player with the highest fantasy points
+     */
     public Player getBestAvailable(PlayerPool pool, Roster roster, RosterSettings rosterSettings) {
         Player best = null;
 
         for (String position : rosterSettings.getPositions()) {
-            List<Player> players = pool.getPlayers(position);
-            for (Player player : players) {
+            for (Player player : pool.getPlayers(position)) {
                 if (roster.canAddPlayer(player, rosterSettings)) {
                     if (best == null || best.getPoints() < player.getPoints()) {
                         best = player;
