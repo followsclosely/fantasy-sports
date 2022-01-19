@@ -10,8 +10,8 @@ the league are as follows:
 - End of playoff stats are available
   here: https://github.com/followsclosely/fantasy-sports/tree/master/nfl/playoff/src/main/resources/stats
 
-The optimal lineup for the 2015 season is highliged in green. The greyed out players are eliminated as there is a higher
-scoring player from the same team at that position.
+The optimal lineup for the 2015 season is highlighted in green. The greyed out players are eliminated as there is a
+higher scoring player from the same team at that position.
 ![optimal](nfl/playoff/doc/optimal.png)
 
 | Class Name                                                                                                                                                                                                | Points |          QB1          |         RB1          |         RB2          |          WR1           |          WR2           |      RB/WR/TE       |          TE1          |          K          |           DT            |
