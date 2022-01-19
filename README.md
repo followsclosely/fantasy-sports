@@ -14,6 +14,12 @@ The optimal lineup for the 2015 season is highlighted in green. The greyed out p
 higher scoring player from the same team at that position.
 ![optimal](nfl/playoff/doc/optimal.png)
 
+## The RosterGenerator Interface
+
+Currently, there are three implementations
+of [RosterGenerator](https://github.com/followsclosely/fantasy-sports/blob/master/nfl/playoff/src/main/java/io/github/followsclosley/fantasy/nfl/playoff/RosterGenerator.java)
+. The optimal lineup according to each implementation can be seen below.
+
 | Class Name                                                                                                                                                                                                | Points |          QB1          |         RB1          |         RB2          |          WR1           |          WR2           |      RB/WR/TE       |          TE1          |          K          |           DT            |
 |:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:------:|:---------------------:|:--------------------:|:--------------------:|:----------------------:|:----------------------:|:-------------------:|:---------------------:|:-------------------:|:-----------------------:|
 | [BruteForceLineupGenerator](https://github.com/followsclosely/fantasy-sports/blob/master/nfl/playoff/src/main/java/io/github/followsclosley/fantasy/nfl/playoff/generator/BruteForceLineupGenerator.java) | 383.94 | Aaron Rodgers (51.84) | C.J. Anderson (48.3) | David Johnson (41.6) | Martavis Bryant (46.7) | Jermaine Kearse (38.8) | Jordan Reed (27.0) | Rob Gronkowski (55.7) | Cairo Santos (20.0) |  Carolina D/ST (54.0)   |
@@ -32,7 +38,7 @@ Points: 378.70	Cam Newton     (75.6)	Rob Gronkowski (55.7)	C.J. Anderson (48.3)	
 
 ```
 
-### Reference Documentation
+## Reference Documentation
 
 For further reference, please consider the following sections:
 
@@ -40,9 +46,8 @@ For further reference, please consider the following sections:
 * [Spring Boot Gradle Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.6.2/gradle-plugin/reference/html/)
 * [Create an OCI image](https://docs.spring.io/spring-boot/docs/2.6.2/gradle-plugin/reference/html/#build-image)
 
-### Additional Links
+## Additional Links
 
 These additional references should also help you:
 
 * [Gradle Build Scans – insights for your project's build](https://scans.gradle.com#gradle)
-
