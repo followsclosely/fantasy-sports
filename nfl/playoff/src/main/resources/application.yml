@@ -1,6 +1,6 @@
 fantasy:
   nfl:
-    stats-resource: stats/2021/2021-W1.csv
+    stats-resource: stats/2015/2015.csv
     roster:
       size: 9
       limits:
