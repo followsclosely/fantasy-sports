@@ -1,5 +1,7 @@
 package io.github.followsclosley.fantasy.nfl.playoff;
 
+import java.util.Objects;
+
 /**
  * Player pojo
  *
@@ -43,5 +45,18 @@ public class Player {
 
     public String getId() {
         return id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Player)) return false;
+        Player player = (Player) o;
+        return id.equals(player.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

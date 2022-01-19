@@ -45,8 +45,8 @@ public class BruteForceLineupGenerator implements RosterGenerator {
         int total = 0;
 
         List<Player> fxs = new ArrayList<>(pool.getPlayers("WR"));
-        fxs.addAll(pool.getPlayers("RB"));
-        fxs.addAll(pool.getPlayers("TE"));
+        //fxs.addAll(pool.getPlayers("RB"));
+        //fxs.addAll(pool.getPlayers("TE"));
         fxs.sort(Comparator.comparingDouble(Player::getPoints).reversed());
 
         ArrayList<Roster> sortedRosters = new ArrayList<>();
@@ -82,7 +82,7 @@ public class BruteForceLineupGenerator implements RosterGenerator {
                                                                                 sortedRosters.add(rosterFx);
                                                                             }
 
-                                                                            if (++total % 1000000 == 0) {
+                                                                            if (++total % 10000 == 0) {
                                                                                 sortedRosters.sort(Comparator.comparing(Roster::getPoints).reversed());
                                                                                 sortedRosters.subList(numberToReturn, sortedRosters.size()).clear();
                                                                                 if (debug) {

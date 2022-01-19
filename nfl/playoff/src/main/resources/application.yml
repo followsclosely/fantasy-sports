@@ -1,20 +1,21 @@
 fantasy:
   nfl:
-    stats-resource: stats/2015/2015.csv
+    stats-resource: stats/2021/2021-W1.csv
+    excluded-teams: ['xSF', 'xPIT', 'xLV', 'xDAL', 'xPHI', 'xARI']
     roster:
       size: 9
       limits:
         QB: 1
         RB: 2
-        WR: 2
-        TE: 2
+        WR: 3
+        TE: 1
         K: 1
         D: 1
     roster-generator:
       brute-force:
-        debug: false
+        debug: true
         number-to-return: 5
       max-points:
-        debug: false
+        debug: true
       value:
-        debug: false
+        debug: true

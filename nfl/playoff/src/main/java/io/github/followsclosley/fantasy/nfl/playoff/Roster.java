@@ -62,9 +62,7 @@ public class Roster {
 
         // Generate a new hashCode
         StringBuilder builder = new StringBuilder();
-        for (Player p : players) {
-            builder.append(p.getId()).append(".");
-        }
+        new ArrayList<Player>(players).stream().sorted(Comparator.comparing(Player::getId)).forEach(p->builder.append(p.getId()).append("."));
 
         return builder.toString();
     }
