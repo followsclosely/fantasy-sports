@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -33,9 +34,6 @@ public class BruteForceLineupGenerator implements RosterGenerator {
 
     @Value("${fantasy.nfl.roster-generator.brute-force.debug:false}")
     private final boolean debug = false;
-
-    //9QB*8RB*7RB*6WR*6WR*6WR*6TE*3DT*3K*(only 75% of the lineups are unique)
-    double estimatedTotal = 9 * 8 * 7 * 6 * 6 * 6 * 6 * 3 * 3 * .75;
 
     /**
      * Generates the optimal Roster.
@@ -92,11 +90,11 @@ public class BruteForceLineupGenerator implements RosterGenerator {
                                                                                 sortedRosters.add(rosterFx);
                                                                             }
 
-                                                                            if (++total % 1000000 == 0) {
+                                                                            if (++total % 10000 == 0) {
                                                                                 sortedRosters.sort(Comparator.comparing(Roster::getPoints).reversed());
                                                                                 sortedRosters.subList(numberToReturn, sortedRosters.size()).clear();
                                                                                 if (debug) {
-                                                                                    System.out.print(String.format("\r  %s %.2f%% %d %n", new Date(), ((total / estimatedTotal) * 100), total));
+                                                                                    System.out.print("\r " + new Date() + " " + total);
                                                                                 }
                                                                             }
                                                                         }
@@ -117,15 +115,13 @@ public class BruteForceLineupGenerator implements RosterGenerator {
             }
         }
 
+        System.out.print("\r");
+
         if (sortedRosters.size() > 1) {
             sortedRosters.sort(Comparator.comparing(Roster::getPoints).reversed());
             sortedRosters.subList(numberToReturn, sortedRosters.size()).clear();
         }
         sortedRosters.forEach(Roster::sort);
-
-        if (debug) {
-            System.out.format("%s %.2f%% %d %n", new Date(), ((total / estimatedTotal) * 100), total);
-        }
 
         return sortedRosters;
     }

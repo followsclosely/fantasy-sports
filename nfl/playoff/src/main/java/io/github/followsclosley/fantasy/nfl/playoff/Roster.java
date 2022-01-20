@@ -52,6 +52,10 @@ public class Roster {
      */
     public Optional<Position> canAddPlayer(Player player) {
 
+        if( player == null) {
+            return Optional.empty();
+        }
+
         // only one player per team
         for (Player playerOnRoster : players) {
             if (player.getTeam().equals(playerOnRoster.getTeam())) {
@@ -71,6 +75,12 @@ public class Roster {
         return Optional.empty();
     }
 
+    /**
+     * Adds a player to the roster
+     *
+     * @param player the player to be added
+     * @return The position the player was added as, empty if player was not added.
+     */
     public Optional<Position> addPlayer(Player player) {
         Optional<Position> optionalPosition = canAddPlayer(player);
 
@@ -136,7 +146,7 @@ public class Roster {
         roster.players.addAll(players);
         roster.points = points;
 
-        counts.entrySet().forEach(entry -> roster.counts.put(entry.getKey(), new AtomicInteger(entry.getValue().get())));
+        counts.forEach((key, value) -> roster.counts.put(key, new AtomicInteger(value.get())));
         roster.addPlayer(player);
         return roster;
     }

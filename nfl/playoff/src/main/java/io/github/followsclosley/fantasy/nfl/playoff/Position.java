@@ -15,7 +15,20 @@ public class Position implements Predicate<Player> {
     private final Set<String> positions;
 
     /**
-     * Creates a new Position
+     * Creates a new Position. A sample starting lineup would be as follows:
+     *
+     * <pre>
+     * // This position is named QB and can be
+     * // filled by a player with QB as a position
+     * Position qb = new Position("QB");
+     * Position qb = new Position("RB");
+     * Position qb = new Position("WR");
+     * Position qb = new Position("TE");
+     * // This position is named Flex and can be any of RB,WR or TE
+     * Position qb = new Position("Flex", "RB", "WR", "TE");
+     * Position qb = new Position("K");
+     * Position qb = new Position("DT");
+     * </pre>
      *
      * @param position The first string is the name of this position, followed by
      *                 the valid player positions that this Position can be filled by
