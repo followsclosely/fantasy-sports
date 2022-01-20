@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Holds all players, grouped by position.
+ * Holds all players.
  *
  * @author M.L Wilson
  */
@@ -27,7 +26,7 @@ public class PlayerPool {
     public Stream<Player> getPlayers(String... position) {
         PositionFilter predicate = new PositionFilter(position);
         Stream<Player> stream = pool.stream().filter(predicate);
-        return ( position.length == 1) ? stream : stream.sorted(Comparator.comparingDouble(Player::getPoints).reversed());
+        return (position.length == 1) ? stream : stream.sorted(Comparator.comparingDouble(Player::getPoints).reversed());
     }
 
     public PlayerPool lock() {

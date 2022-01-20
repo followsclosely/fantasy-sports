@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * This RosterGenerator uses brute force and generates all possible lineups for the
@@ -39,8 +38,8 @@ public class BruteForceLineupGenerator implements RosterGenerator {
     /**
      * Generates the optimal Roster.
      *
-     * @param pool             Available Players
-     * @param rosterSettings   Roster Limits
+     * @param pool           Available Players
+     * @param rosterSettings Roster Limits
      * @return The absolute optimal roster
      */
     public ArrayList<Roster> generate(PlayerPool pool, RosterSettings rosterSettings) {
