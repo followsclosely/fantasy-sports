@@ -9,10 +9,8 @@ import org.springframework.core.io.Resource;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * This PlayerPoolLoader loads the first player for each position per team.
@@ -30,6 +28,9 @@ public class PlayerPoolLoader {
     @Value("${fantasy.nfl.stats-resource}")
     private final Resource resource = null;
 
+    @Value("${fantasy.nfl.excluded-teams:#{null}}")
+    private List<String> excludedTeams;
+
     @Autowired
     private RosterSettings rosterSettings;
 
@@ -38,35 +39,36 @@ public class PlayerPoolLoader {
         PlayerPool pool = new PlayerPool();
         int i = 0;
         String line;
-        Set<String> lock = new HashSet<>();
 
+        //Load all the players
+        List<Player> allPlayers = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new InputStreamReader(resource.getInputStream()))) {
             // File must be sorted by most fantasy points descending
             while ((line = br.readLine()) != null) {
                 if (!line.startsWith("#")) // Comment out players with a #
                 {
                     String[] values = line.split(",");
-                    Player player = new Player(String.valueOf(i++), values[0], Float.parseFloat(values[3]), values[2], values[1]);
-
-                    String key = player.getPosition() + player.getTeam();
-
-                    // Only add the best player per team for every position.
-                    if (!lock.contains(key)) {
-                        int size = pool.getPlayers(player.getPosition()).size();
-                        if (size < rosterSettings.getSize()) {
-                            pool.getPlayers(player.getPosition()).add(player);
-                            lock.add(key);
-                        }
-                    }
+                    allPlayers.add(new Player(String.valueOf(i++), values[0], Float.parseFloat(values[3]), values[2], values[1]));
                 }
             }
         }
 
-        for (String position : pool.getPositions()) {
-            List<Player> players = pool.getPlayers(position);
-            players.sort(Comparator.comparingDouble(Player::getPoints).reversed());
+        Set<String> lock = new HashSet<>();
+        //Sort by points, so we have the best players first.
+        allPlayers.sort(Comparator.comparingDouble(Player::getPoints).reversed());
+        for (Player player : allPlayers) {
+            //Only add one player per position, per team as we don't care about
+            //the second-best player on a team at a given position
+            String key = player.getPosition() + player.getTeam();
+            if (!lock.contains(key)) {
+                //We do need a player from every team, even if the player scores negative points.
+                //It is unlikely that the player would be selected, but possible.
+                pool.addPlayer(player);
+                lock.add(key);
+            }
+
         }
 
-        return pool;
+        return pool.lock();
     }
 }

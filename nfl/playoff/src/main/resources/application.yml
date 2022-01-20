@@ -1,6 +1,7 @@
 fantasy:
   nfl:
     stats-resource: stats/2015/2015.csv
+    excluded-teams: [ 'xSF', 'xPIT', 'xLV', 'xDAL', 'xPHI', 'xARI' ]
     roster:
       size: 9
       limits:

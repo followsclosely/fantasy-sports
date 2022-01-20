@@ -1,6 +1,11 @@
 package io.github.followsclosley.fantasy.nfl.playoff;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Holds all players, grouped by position.
@@ -8,23 +13,25 @@ import java.util.*;
  * @author M.L Wilson
  */
 public class PlayerPool {
-    private final Map<String, List<Player>> pool = new HashMap<>() {
-        private static final long serialVersionUID = 1L;
 
-        public List<Player> get(Object key) {
-            List<Player> players = super.get(key);
-            if (players == null) {
-                super.put((String) key, players = new ArrayList<>());
-            }
-            return players;
-        }
-    };
+    private List<Player> pool = new ArrayList<>();
 
-    public Set<String> getPositions() {
-        return pool.keySet();
+    public List<Player> getPlayers() {
+        return pool;
     }
 
-    public List<Player> getPlayers(String position) {
-        return pool.get(position);
+    public void addPlayer(Player player) {
+        pool.add(player);
+    }
+
+    public Stream<Player> getPlayers(String... position) {
+        PositionFilter predicate = new PositionFilter(position);
+        Stream<Player> stream = pool.stream().filter(predicate);
+        return ( position.length == 1) ? stream : stream.sorted(Comparator.comparingDouble(Player::getPoints).reversed());
+    }
+
+    public PlayerPool lock() {
+        this.pool = Collections.unmodifiableList(this.pool);
+        return this;
     }
 }

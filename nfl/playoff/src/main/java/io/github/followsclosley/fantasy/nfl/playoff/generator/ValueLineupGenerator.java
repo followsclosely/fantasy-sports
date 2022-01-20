@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * This RosterGenerator leverages Value-based drafting (VBD) to draft the optimal lineup.
@@ -62,7 +63,7 @@ public class ValueLineupGenerator implements RosterGenerator {
 
         for (String position : rosterSettings.getPositions()) {
             Integer depth = rosterSettings.getLimit(position);
-            List<Player> players = pool.getPlayers(position);
+            List<Player> players = pool.getPlayers(position).collect(Collectors.toList());
 
             Delta delta = null;
             for (Player nextPlayer : players) {

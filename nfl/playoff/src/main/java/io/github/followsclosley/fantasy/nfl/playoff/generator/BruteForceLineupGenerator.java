@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * This RosterGenerator uses brute force and generates all possible lineups for the
@@ -37,42 +39,48 @@ public class BruteForceLineupGenerator implements RosterGenerator {
     /**
      * Generates the optimal Roster.
      *
-     * @param pool           Available Players
-     * @param rosterSettings Roster Limits
+     * @param pool             Available Players
+     * @param rosterSettings   Roster Limits
      * @return The absolute optimal roster
      */
     public ArrayList<Roster> generate(PlayerPool pool, RosterSettings rosterSettings) {
         int total = 0;
 
-        List<Player> fxs = new ArrayList<>(pool.getPlayers("WR"));
-        fxs.addAll(pool.getPlayers("RB"));
-        fxs.addAll(pool.getPlayers("TE"));
-        fxs.sort(Comparator.comparingDouble(Player::getPoints).reversed());
+        //Just the top roster.size at any given position should be enough.
+        int limit = rosterSettings.getSize();
+
+        List<Player> qbs = pool.getPlayers("QB").limit(limit).collect(Collectors.toList());
+        List<Player> rbs = pool.getPlayers("RB").limit(limit).collect(Collectors.toList());
+        List<Player> wrs = pool.getPlayers("WR").limit(limit).collect(Collectors.toList());
+        List<Player> tes = pool.getPlayers("TE").limit(limit).collect(Collectors.toList());
+        List<Player> fxs = pool.getPlayers("RB", "WR", "TE").limit(limit).collect(Collectors.toList());
+        List<Player> ks = pool.getPlayers("K").limit(limit).collect(Collectors.toList());
+        List<Player> ds = pool.getPlayers("D").limit(limit).collect(Collectors.toList());
 
         ArrayList<Roster> sortedRosters = new ArrayList<>();
         Set<String> unique = new HashSet<>();
 
-        for (Player qb : pool.getPlayers("QB")) {
+        for (Player qb : qbs) {
             Roster roster = new Roster().addPlayer(qb);
-            for (Player rb1 : pool.getPlayers("RB")) {
+            for (Player rb1 : rbs) {
                 if (roster.canAddPlayer(rb1, null)) {
                     Roster rosterRb1 = roster.getCopy().addPlayer(rb1);
-                    for (Player rb2 : pool.getPlayers("RB")) {
+                    for (Player rb2 : rbs) {
                         if (rosterRb1.canAddPlayer(rb2, null)) {
                             Roster rosterRb2 = rosterRb1.getCopy().addPlayer(rb2);
-                            for (Player wr1 : pool.getPlayers("WR")) {
+                            for (Player wr1 : wrs) {
                                 if (rosterRb2.canAddPlayer(wr1, null)) {
                                     Roster rosterWr1 = rosterRb2.getCopy().addPlayer(wr1);
-                                    for (Player wr2 : pool.getPlayers("WR")) {
+                                    for (Player wr2 : wrs) {
                                         if (rosterWr1.canAddPlayer(wr2, null)) {
                                             Roster rosterWr2 = rosterWr1.getCopy().addPlayer(wr2);
-                                            for (Player te : pool.getPlayers("TE")) {
+                                            for (Player te : tes) {
                                                 if (rosterWr2.canAddPlayer(te, null)) {
                                                     Roster rosterTe = rosterWr2.getCopy().addPlayer(te);
-                                                    for (Player pk : pool.getPlayers("K")) {
+                                                    for (Player pk : ks) {
                                                         if (rosterTe.canAddPlayer(pk, null)) {
                                                             Roster rosterPk = rosterTe.getCopy().addPlayer(pk);
-                                                            for (Player dt : pool.getPlayers("D")) {
+                                                            for (Player dt : ds) {
                                                                 if (rosterPk.canAddPlayer(dt, null)) {
                                                                     Roster rosterDt = rosterPk.getCopy().addPlayer(dt);
                                                                     for (Player fx : fxs) {
@@ -107,8 +115,10 @@ public class BruteForceLineupGenerator implements RosterGenerator {
             }
         }
 
-        sortedRosters.sort(Comparator.comparing(Roster::getPoints).reversed());
-        sortedRosters.subList(numberToReturn, sortedRosters.size()).clear();
+        if (sortedRosters.size() > 1) {
+            sortedRosters.sort(Comparator.comparing(Roster::getPoints).reversed());
+            sortedRosters.subList(numberToReturn, sortedRosters.size()).clear();
+        }
         sortedRosters.forEach(Roster::orderPlayers);
 
         if (debug) {

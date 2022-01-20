@@ -40,18 +40,12 @@ public class MaxPointsLineupGenerator implements RosterGenerator {
      * @return The player with the highest fantasy points
      */
     public Player getBestAvailable(PlayerPool pool, Roster roster, RosterSettings rosterSettings) {
-        Player best = null;
-
-        for (String position : rosterSettings.getPositions()) {
-            for (Player player : pool.getPlayers(position)) {
-                if (roster.canAddPlayer(player, rosterSettings)) {
-                    if (best == null || best.getPoints() < player.getPoints()) {
-                        best = player;
-                    }
-                }
+        //Assumes the pool is sorted. returns the first player that can be rostered.
+        for (Player player : pool.getPlayers()) {
+            if (roster.canAddPlayer(player, rosterSettings)) {
+                return player;
             }
         }
-
-        return best;
+        return null;
     }
 }
