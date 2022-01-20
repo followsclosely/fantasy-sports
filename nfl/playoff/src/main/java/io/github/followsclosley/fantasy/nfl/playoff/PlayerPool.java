@@ -13,10 +13,10 @@ import java.util.stream.Stream;
  */
 public class PlayerPool {
 
-    private List<Player> pool = new ArrayList<>();
+    private final List<Player> pool = new ArrayList<>();
 
     public List<Player> getPlayers() {
-        return pool;
+        return Collections.unmodifiableList(this.pool);
     }
 
     public void addPlayer(Player player) {
@@ -27,10 +27,5 @@ public class PlayerPool {
         PositionFilter predicate = new PositionFilter(position);
         Stream<Player> stream = pool.stream().filter(predicate);
         return (position.length == 1) ? stream : stream.sorted(Comparator.comparingDouble(Player::getPoints).reversed());
-    }
-
-    public PlayerPool lock() {
-        this.pool = Collections.unmodifiableList(this.pool);
-        return this;
     }
 }

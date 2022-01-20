@@ -24,6 +24,7 @@ import java.util.*;
  */
 @Configuration
 public class PlayerPoolLoader {
+
     @Value("${fantasy.nfl.stats-resource}")
     private final Resource resource = null;
 
@@ -59,15 +60,14 @@ public class PlayerPoolLoader {
             //Only add one player per position, per team as we don't care about
             //the second-best player on a team at a given position
             String key = player.getPosition() + player.getTeam();
-            if (!lock.contains(key)) {
+            if (lock.add(key)) {
                 //We do need a player from every team, even if the player scores negative points.
                 //It is unlikely that the player would be selected, but possible.
                 pool.addPlayer(player);
-                lock.add(key);
             }
 
         }
 
-        return pool.lock();
+        return pool;
     }
 }
