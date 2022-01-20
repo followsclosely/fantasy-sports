@@ -1,6 +1,7 @@
 package io.github.followsclosley.fantasy.nfl.playoff.generator;
 
 import io.github.followsclosley.fantasy.nfl.playoff.*;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
  * This RosterGenerator takes the highest scoring player available until the
  * roster is filled.
  */
+@ConditionalOnProperty(prefix = "command.line.runner", value = "enabled", havingValue = "true", matchIfMissing = true)
 @Component
 public class MaxPointsLineupGenerator implements RosterGenerator {
 
@@ -20,7 +22,7 @@ public class MaxPointsLineupGenerator implements RosterGenerator {
      * @return Almost optimal roster
      */
     public List<Roster> generate(PlayerPool pool, RosterSettings rosterSettings) {
-        Roster roster = new Roster();
+        Roster roster = new Roster(rosterSettings);
 
         Player best = getBestAvailable(pool, roster, rosterSettings);
         while (best != null) {
@@ -28,7 +30,7 @@ public class MaxPointsLineupGenerator implements RosterGenerator {
             best = getBestAvailable(pool, roster, rosterSettings);
         }
 
-        return List.of(roster.orderPlayers());
+        return List.of(roster.sort());
     }
 
     /**
@@ -42,7 +44,7 @@ public class MaxPointsLineupGenerator implements RosterGenerator {
     public Player getBestAvailable(PlayerPool pool, Roster roster, RosterSettings rosterSettings) {
         //Assumes the pool is sorted. returns the first player that can be rostered.
         for (Player player : pool.getPlayers()) {
-            if (roster.canAddPlayer(player, rosterSettings)) {
+            if (roster.canAddPlayer(player).isPresent()) {
                 return player;
             }
         }

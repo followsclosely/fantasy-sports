@@ -19,13 +19,17 @@ public class PlayerPool {
         return Collections.unmodifiableList(this.pool);
     }
 
-    public void addPlayer(Player player) {
+    protected void addPlayer(Player player) {
         pool.add(player);
     }
 
     public Stream<Player> getPlayers(String... position) {
-        PositionFilter predicate = new PositionFilter(position);
-        Stream<Player> stream = pool.stream().filter(predicate);
-        return (position.length == 1) ? stream : stream.sorted(Comparator.comparingDouble(Player::getPoints).reversed());
+        Position predicate = new Position(position);
+        return getPlayers(predicate);
+    }
+
+    public Stream<Player> getPlayers(Position position) {
+        Stream<Player> stream = pool.stream().filter(position);
+        return (position.getPositions().size() == 1) ? stream : stream.sorted(Comparator.comparingDouble(Player::getPoints).reversed());
     }
 }

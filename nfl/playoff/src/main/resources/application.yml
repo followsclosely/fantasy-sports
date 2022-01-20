@@ -4,13 +4,14 @@ fantasy:
     excluded-teams: [ 'xSF', 'xPIT', 'xLV', 'xDAL', 'xPHI', 'xARI' ]
     roster:
       size: 9
-      limits:
-        QB: 1
-        RB: 2
-        WR: 2
-        TE: 2
-        K: 1
-        D: 1
+      positions:
+        "QB": 1
+        "RB": 2
+        "WR": 2
+        "TE": 1
+        "[FX,RB,WR,TE]": 1
+        "K": 1
+        "D": 1
     roster-generator:
       brute-force:
         debug: false
@@ -18,4 +19,4 @@ fantasy:
       max-points:
         debug: false
       value:
-        debug: false
+        debug: true

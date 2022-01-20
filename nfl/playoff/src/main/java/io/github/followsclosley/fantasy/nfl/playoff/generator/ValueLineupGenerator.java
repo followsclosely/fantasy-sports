@@ -2,6 +2,7 @@ package io.github.followsclosley.fantasy.nfl.playoff.generator;
 
 import io.github.followsclosley.fantasy.nfl.playoff.*;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
  * - https://www.fantasypros.com/
  * </p>
  */
+@ConditionalOnProperty(prefix = "command.line.runner", value = "enabled", havingValue = "true", matchIfMissing = true)
 @Component
 public class ValueLineupGenerator implements RosterGenerator {
 
@@ -32,20 +34,20 @@ public class ValueLineupGenerator implements RosterGenerator {
      * @return Almost optimal roster
      */
     public List<Roster> generate(PlayerPool pool, RosterSettings rosterSettings) {
-        Roster roster = new Roster();
+        Roster roster = new Roster(rosterSettings);
 
         while (true) {
             List<Delta> deltas = getDeltas(pool, rosterSettings, roster);
+            if (debug) debug(roster, deltas);
 
             if (deltas.size() > 0) {
                 roster.addPlayer(deltas.get(0).getPlayer());
-                if (debug) debug(roster, deltas);
             } else {
                 break;
             }
         }
 
-        return List.of(roster.orderPlayers());
+        return List.of(roster.sort());
     }
 
 
@@ -61,25 +63,25 @@ public class ValueLineupGenerator implements RosterGenerator {
     private List<Delta> getDeltas(PlayerPool pool, RosterSettings rosterSettings, Roster roster) {
         List<Delta> deltas = new ArrayList<>();
 
-        for (String position : rosterSettings.getPositions()) {
-            Integer depth = rosterSettings.getLimit(position);
-            List<Player> players = pool.getPlayers(position).collect(Collectors.toList());
+        for (Position position : rosterSettings.getPositions()) {
 
-            Delta delta = null;
-            for (Player nextPlayer : players) {
-                if (roster.getPlayers().contains(nextPlayer)) {
-                    --depth;
-                } else if (delta == null && roster.canAddPlayer(nextPlayer, rosterSettings)) {
-                    delta = new Delta(nextPlayer);
-                } else {
-                    if (roster.canAddPlayer(nextPlayer, rosterSettings) && (--depth == 0)) {
-                        delta.setNextBest(nextPlayer);
+            int count = roster.getCount(position);
+            int limit = rosterSettings.getLimit(position);
+            int need = limit - count;
+
+            //System.out.println( position + " : " + count + "/" + limit + " need=" + need );
+            if (need > 0) {
+                List<Player> players = pool.getPlayers(position).filter(p -> roster.canAddPlayer(p).isPresent()).collect(Collectors.toList());
+
+                if (!players.isEmpty()) {
+                    Delta delta = new Delta(position, players.get(0));
+                    if (players.size() >= limit) {
+                        delta.setNextBest(players.get(limit));
+                    } else {
+                        delta.value = delta.player.getPoints();
                     }
+                    deltas.add(delta);
                 }
-            }
-
-            if (delta != null) {
-                deltas.add(delta);
             }
         }
 
@@ -89,7 +91,7 @@ public class ValueLineupGenerator implements RosterGenerator {
 
     private void debug(Roster roster, List<Delta> deltas) {
         for (Delta delta : deltas) {
-            System.out.println(delta.getPlayer().getPosition() + "\t" + String.format("%.2f", delta.getValue())
+            System.out.println(delta.getPosition().getName() + "\t" + String.format("%.2f", delta.getValue())
                     + " =\t " + delta.getPlayer() + "(" + delta.getPlayer().getPoints() + ")\t-  " + delta.getNextBest()
                     + "(" + (delta.getNextBest() == null ? "0" : delta.getNextBest().getPoints()) + ")");
         }
@@ -97,12 +99,18 @@ public class ValueLineupGenerator implements RosterGenerator {
     }
 
     public static class Delta {
+        private final Position position;
         private final Player player;
         private float value;
         private Player nextBest;
 
-        public Delta(Player player) {
+        public Delta(Position position, Player player) {
+            this.position = position;
             this.player = player;
+        }
+
+        public Position getPosition() {
+            return position;
         }
 
         public float getValue() {
@@ -120,6 +128,11 @@ public class ValueLineupGenerator implements RosterGenerator {
         public void setNextBest(Player nextBest) {
             this.nextBest = nextBest;
             this.value = player.getPoints() - nextBest.getPoints();
+        }
+
+        @Override
+        public String toString() {
+            return "Delta{" + position + ", " + player + " -> " + nextBest + " = " + value + "}";
         }
     }
 }

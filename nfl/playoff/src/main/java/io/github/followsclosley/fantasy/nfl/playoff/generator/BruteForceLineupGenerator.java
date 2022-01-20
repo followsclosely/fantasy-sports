@@ -2,6 +2,7 @@ package io.github.followsclosley.fantasy.nfl.playoff.generator;
 
 import io.github.followsclosley.fantasy.nfl.playoff.*;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
  * Note that this implementation does not use the RosterSettings passed in. It is hard coded
  * to the above 9 positions.
  */
+@ConditionalOnProperty(prefix = "command.line.runner", value = "enabled", havingValue = "true", matchIfMissing = true)
 @Component
 public class BruteForceLineupGenerator implements RosterGenerator {
 
@@ -60,31 +62,32 @@ public class BruteForceLineupGenerator implements RosterGenerator {
         Set<String> unique = new HashSet<>();
 
         for (Player qb : qbs) {
-            Roster roster = new Roster().addPlayer(qb);
+            Roster roster = new Roster(rosterSettings);
+            roster.addPlayer(qb);
             for (Player rb1 : rbs) {
-                if (roster.canAddPlayer(rb1, null)) {
-                    Roster rosterRb1 = roster.getCopy().addPlayer(rb1);
+                if (roster.canAddPlayer(rb1).isPresent()) {
+                    Roster rosterRb1 = roster.addPlayerAndClone(rb1);
                     for (Player rb2 : rbs) {
-                        if (rosterRb1.canAddPlayer(rb2, null)) {
-                            Roster rosterRb2 = rosterRb1.getCopy().addPlayer(rb2);
+                        if (rosterRb1.canAddPlayer(rb2).isPresent()) {
+                            Roster rosterRb2 = rosterRb1.addPlayerAndClone(rb2);
                             for (Player wr1 : wrs) {
-                                if (rosterRb2.canAddPlayer(wr1, null)) {
-                                    Roster rosterWr1 = rosterRb2.getCopy().addPlayer(wr1);
+                                if (rosterRb2.canAddPlayer(wr1).isPresent()) {
+                                    Roster rosterWr1 = rosterRb2.addPlayerAndClone(wr1);
                                     for (Player wr2 : wrs) {
-                                        if (rosterWr1.canAddPlayer(wr2, null)) {
-                                            Roster rosterWr2 = rosterWr1.getCopy().addPlayer(wr2);
+                                        if (rosterWr1.canAddPlayer(wr2).isPresent()) {
+                                            Roster rosterWr2 = rosterWr1.addPlayerAndClone(wr2);
                                             for (Player te : tes) {
-                                                if (rosterWr2.canAddPlayer(te, null)) {
-                                                    Roster rosterTe = rosterWr2.getCopy().addPlayer(te);
+                                                if (rosterWr2.canAddPlayer(te).isPresent()) {
+                                                    Roster rosterTe = rosterWr2.addPlayerAndClone(te);
                                                     for (Player pk : ks) {
-                                                        if (rosterTe.canAddPlayer(pk, null)) {
-                                                            Roster rosterPk = rosterTe.getCopy().addPlayer(pk);
+                                                        if (rosterTe.canAddPlayer(pk).isPresent()) {
+                                                            Roster rosterPk = rosterTe.addPlayerAndClone(pk);
                                                             for (Player dt : ds) {
-                                                                if (rosterPk.canAddPlayer(dt, null)) {
-                                                                    Roster rosterDt = rosterPk.getCopy().addPlayer(dt);
+                                                                if (rosterPk.canAddPlayer(dt).isPresent()) {
+                                                                    Roster rosterDt = rosterPk.addPlayerAndClone(dt);
                                                                     for (Player fx : fxs) {
-                                                                        if (rosterDt.canAddPlayer(fx, null)) {
-                                                                            Roster rosterFx = rosterDt.getCopy().addPlayer(fx);
+                                                                        if (rosterDt.canAddPlayer(fx).isPresent()) {
+                                                                            Roster rosterFx = rosterDt.addPlayerAndClone(fx);
                                                                             if (unique.add(rosterFx.getUniqueKey())) {
                                                                                 sortedRosters.add(rosterFx);
                                                                             }
@@ -118,7 +121,7 @@ public class BruteForceLineupGenerator implements RosterGenerator {
             sortedRosters.sort(Comparator.comparing(Roster::getPoints).reversed());
             sortedRosters.subList(numberToReturn, sortedRosters.size()).clear();
         }
-        sortedRosters.forEach(Roster::orderPlayers);
+        sortedRosters.forEach(Roster::sort);
 
         if (debug) {
             System.out.format("%s %.2f%% %d %n", new Date(), ((total / estimatedTotal) * 100), total);
