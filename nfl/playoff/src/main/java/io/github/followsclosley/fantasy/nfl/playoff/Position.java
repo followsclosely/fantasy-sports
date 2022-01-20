@@ -14,6 +14,12 @@ public class Position implements Predicate<Player> {
     private final String name;
     private final Set<String> positions;
 
+    /**
+     * Creates a new Position
+     *
+     * @param position The first string is the name of this position, followed by
+     *                 the valid player positions that this Position can be filled by
+     */
     public Position(String... position) {
         assert position != null;
         assert position.length > 0;
@@ -26,6 +32,11 @@ public class Position implements Predicate<Player> {
         }
     }
 
+    /**
+     * Returns the name of this position
+     *
+     * @return The name of this position
+     */
     public String getName() {
         return name;
     }
