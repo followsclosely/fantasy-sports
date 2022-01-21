@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.StopWatch;
 
 import java.util.List;
 
@@ -29,16 +30,19 @@ public class FantasyNflPlayoffApplication {
     @Bean
     public CommandLineRunner getCommandLineRunner(List<RosterGenerator> rosterGenerators, PlayerPool playerPool, RosterSettings rosterSettings) {
         return args -> {
+            StopWatch watch = new StopWatch();
+
             for (RosterGenerator rosterGenerator : rosterGenerators) {
-                long start = System.currentTimeMillis();
+                watch.start(rosterGenerator.getClass().getSimpleName());
                 List<Roster> sortedRosters = rosterGenerator.generate(playerPool, rosterSettings);
-                System.out.println("(" + (System.currentTimeMillis() - start) + "ms) " + rosterGenerator.getClass().getName());
+                watch.stop();
+                System.out.println("(" + watch.getTotalTimeMillis() + "ms) " + rosterGenerator.getClass().getName());
                 for (int i = 0, size = Math.min(sortedRosters.size(), 20); (i < size); i++) {
                     System.out.println(sortedRosters.get(i));
                 }
                 System.out.println();
-
             }
+            System.out.println(watch.prettyPrint());
         };
     }
 }

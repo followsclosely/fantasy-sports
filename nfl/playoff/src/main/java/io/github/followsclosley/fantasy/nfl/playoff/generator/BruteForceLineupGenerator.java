@@ -41,8 +41,7 @@ public class BruteForceLineupGenerator implements RosterGenerator {
      * @param rosterSettings Roster Limits
      * @return The absolute optimal roster
      */
-    public ArrayList<Roster> generate(PlayerPool pool, RosterSettings rosterSettings) {
-        int total = 0;
+    public List<Roster> generate(PlayerPool pool, RosterSettings rosterSettings) {
 
         //Just the top roster.size at any given position should be enough.
         int limit = rosterSettings.getSize();
@@ -55,8 +54,7 @@ public class BruteForceLineupGenerator implements RosterGenerator {
         List<Player> ks = pool.getPlayers("K").limit(limit).collect(Collectors.toList());
         List<Player> ds = pool.getPlayers("D").limit(limit).collect(Collectors.toList());
 
-
-        ArrayList<Roster> sortedRosters = new ArrayList<>();
+        Roster bestRoster = null;
         Set<String> unique = new HashSet<>();
 
         for (Player qb : qbs) {
@@ -86,16 +84,8 @@ public class BruteForceLineupGenerator implements RosterGenerator {
                                                                     for (Player fx : fxs) {
                                                                         if (rosterDt.canAddPlayer(fx).isPresent()) {
                                                                             Roster rosterFx = rosterDt.addPlayerAndClone(fx);
-                                                                            if (unique.add(rosterFx.getUniqueKey())) {
-                                                                                sortedRosters.add(rosterFx);
-                                                                            }
-
-                                                                            if (++total % 10000 == 0) {
-                                                                                sortedRosters.sort(Comparator.comparing(Roster::getPoints).reversed());
-                                                                                sortedRosters.subList(numberToReturn, sortedRosters.size()).clear();
-                                                                                if (debug) {
-                                                                                    System.out.print("\r " + new Date() + " " + total);
-                                                                                }
+                                                                            if ( bestRoster == null || bestRoster.getPoints() < rosterFx.getPoints()){
+                                                                                bestRoster = rosterFx;
                                                                             }
                                                                         }
                                                                     }
@@ -115,14 +105,6 @@ public class BruteForceLineupGenerator implements RosterGenerator {
             }
         }
 
-        System.out.print("\r");
-
-        if (sortedRosters.size() > 1) {
-            sortedRosters.sort(Comparator.comparing(Roster::getPoints).reversed());
-            sortedRosters.subList(numberToReturn, sortedRosters.size()).clear();
-        }
-        sortedRosters.forEach(Roster::sort);
-
-        return sortedRosters;
+        return List.of(bestRoster);
     }
 }
