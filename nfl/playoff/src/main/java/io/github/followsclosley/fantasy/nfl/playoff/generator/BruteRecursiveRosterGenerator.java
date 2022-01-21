@@ -16,17 +16,29 @@ import java.util.stream.Collectors;
 @Component
 public class BruteRecursiveRosterGenerator implements RosterGenerator {
 
+    @Value("${fantasy.nfl.roster-generator.brute-recursive.debug:false}")
+    private final boolean debug = false;
+
     @Override
     public List<Roster> generate(PlayerPool pool, RosterSettings rosterSettings) {
-        Context context = new Context(pool, rosterSettings);
-        recursive(context, new Roster(rosterSettings), 0);
+        Context context = recursive(new Context(pool, rosterSettings), new Roster(rosterSettings), 0);
         return List.of(context.bestRoster);
     }
 
-    public void recursive(Context context, Roster roster, int depth) {
+    public Context recursive(Context context, Roster roster, int depth) {
         if (roster.isFull()) {
             //System.out.println("Roster Complete " + roster);
-            context.addRoster(roster);
+            context.numberOfRosters++;
+            if (context.bestRoster == null || context.bestRoster.getPoints() < roster.getPoints()) {
+                context.bestRoster = roster;
+                if( debug ) {
+                    System.out.print("\r[" + context.numberOfRosters + "] : " + context.bestRoster.toString(13));
+                }
+            }
+
+            if( debug && context.numberOfRosters % 1000000 == 0){
+                System.out.print("\r[" + context.numberOfRosters + "] : " + context.bestRoster.toString(13));
+            }
         } else {
             Position positionToFill = context.positionAtDepth.get(depth);
             List<Player> players = context.playerPools.get(positionToFill);
@@ -36,20 +48,21 @@ public class BruteRecursiveRosterGenerator implements RosterGenerator {
                 }
             }
         }
+
+        return context;
     }
 
     public static class Context {
-
-        @Value("${fantasy.nfl.roster-generator.brute-recursive.debug:false}")
-        private final boolean debug = false;
-
         //Holds all the positions of the roster expanding so that ever recursive depth has a position to work with.
         List<Position> positionAtDepth;
 
         //List of players for a given Position
         Map<Position, List<Player>> playerPools;
 
+        //The total number of simulated rosters
         int numberOfRosters = 0;
+
+        //The best roster
         Roster bestRoster;
 
         public Context(final PlayerPool pool, RosterSettings settings) {
@@ -57,20 +70,6 @@ public class BruteRecursiveRosterGenerator implements RosterGenerator {
             this.playerPools = new HashMap<>(settings.getSize());
             for (Position p : settings.getPositions()) {
                 this.playerPools.put(p, pool.getPlayers(p).limit(settings.getSize()).collect(Collectors.toList()));
-            }
-        }
-
-        public void addRoster(Roster roster) {
-            numberOfRosters++;
-            if (bestRoster == null || bestRoster.getPoints() < roster.getPoints()) {
-                bestRoster = roster;
-                if( debug ) {
-                    System.out.print("\r[" + numberOfRosters + "] : " + bestRoster.toString(13));
-                }
-            }
-
-            if( debug && numberOfRosters % 1000000 == 0){
-                System.out.print("\r[" + numberOfRosters + "] : " + bestRoster.toString(13));
             }
         }
     }
