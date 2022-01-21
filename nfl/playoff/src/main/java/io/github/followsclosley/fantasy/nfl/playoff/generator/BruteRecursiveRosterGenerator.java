@@ -19,13 +19,30 @@ public class BruteRecursiveRosterGenerator implements RosterGenerator {
     @Value("${fantasy.nfl.roster-generator.brute-recursive.debug:false}")
     private final boolean debug = false;
 
+    /**
+     * Given the player pool and roster limits, generate the optimal lineup using recursion.
+     *
+     * @param pool           Available Players
+     * @param rosterSettings Roster Limits
+     * @return The optimal lineup
+     */
     @Override
     public List<Roster> generate(PlayerPool pool, RosterSettings rosterSettings) {
-        Context context = recursive(new Context(pool, rosterSettings), new Roster(rosterSettings), 0);
+        Context context = tryAllPlayersAtThisDepth(new Context(pool, rosterSettings), new Roster(rosterSettings), 0);
         return List.of(context.bestRoster);
     }
 
-    public Context recursive(Context context, Roster roster, int depth) {
+    /**
+     * Loops thought all the valid player for this spot [depth] on the roster and excursively calls
+     * itself for the next level down.
+     *
+     * @param context Holds the players and position at each depth
+     * @param roster Current roster being simulated
+     * @param depth the recursion depth and also the index of the roster position being filled
+     *
+     * @return the Context used
+     */
+    public Context tryAllPlayersAtThisDepth(Context context, Roster roster, int depth) {
         if (roster.isFull()) {
             if (context.numberOfRosters++ == 0 || context.bestRoster.getPoints() < roster.getPoints()) {
                 context.bestRoster = roster;
@@ -40,7 +57,7 @@ public class BruteRecursiveRosterGenerator implements RosterGenerator {
             List<Player> players = context.playerPools.get(positionToFill);
             for (Player player : players) {
                 if (roster.canAddPlayer(player).isPresent()) {
-                    recursive(context, roster.addPlayerAndClone(player), depth + 1);
+                    tryAllPlayersAtThisDepth(context, roster.addPlayerAndClone(player), depth + 1);
                 }
             }
         }
