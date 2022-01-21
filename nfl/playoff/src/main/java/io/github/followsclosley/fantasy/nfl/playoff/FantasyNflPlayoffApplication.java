@@ -36,7 +36,7 @@ public class FantasyNflPlayoffApplication {
                 watch.start(rosterGenerator.getClass().getSimpleName());
                 List<Roster> sortedRosters = rosterGenerator.generate(playerPool, rosterSettings);
                 watch.stop();
-                System.out.println("(" + watch.getTotalTimeMillis() + "ms) " + rosterGenerator.getClass().getName());
+                System.out.println("(" + watch.getLastTaskInfo().getTimeMillis() + "ms) " + rosterGenerator.getClass().getName());
                 for (int i = 0, size = Math.min(sortedRosters.size(), 20); (i < size); i++) {
                     System.out.println(sortedRosters.get(i));
                 }
