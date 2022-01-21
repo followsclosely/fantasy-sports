@@ -33,7 +33,7 @@ public class PlayerPool {
         // 1) Group by team
         // 2) select the max points scored
         // 3) Sort by points scored
-        if( position.getPositions().size() > 1){
+        if (position.getPositions().size() > 1) {
             stream = stream.collect(Collectors.groupingBy(Player::getTeam, Collectors.maxBy(Comparator.comparingDouble(Player::getPoints))))
                     .values().stream().flatMap(Optional::stream)
                     .sorted(Comparator.comparingDouble(Player::getPoints).reversed());

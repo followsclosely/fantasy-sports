@@ -27,18 +27,14 @@ public class BruteRecursiveRosterGenerator implements RosterGenerator {
 
     public Context recursive(Context context, Roster roster, int depth) {
         if (roster.isFull()) {
-            //System.out.println("Roster Complete " + roster);
-            context.numberOfRosters++;
-            if (context.bestRoster == null || context.bestRoster.getPoints() < roster.getPoints()) {
+            if (context.numberOfRosters++ == 0 || context.bestRoster.getPoints() < roster.getPoints()) {
                 context.bestRoster = roster;
-                if( debug ) {
-                    System.out.print("\r[" + context.numberOfRosters + "] : " + context.bestRoster.toString(13));
-                }
             }
 
-            if( debug && context.numberOfRosters % 1000000 == 0){
+            if (debug && context.numberOfRosters % 1000000 == 0) {
                 System.out.print("\r[" + context.numberOfRosters + "] : " + context.bestRoster.toString(13));
             }
+
         } else {
             Position positionToFill = context.positionAtDepth.get(depth);
             List<Player> players = context.playerPools.get(positionToFill);

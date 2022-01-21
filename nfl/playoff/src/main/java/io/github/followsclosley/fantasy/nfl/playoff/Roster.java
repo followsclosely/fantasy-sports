@@ -129,11 +129,11 @@ public class Roster {
         List<Player> players = new ArrayList<>(this.players);
         for (Player player : players) {
             String[] names = player.getName().split(" ");
-            String name = (names.length==2) ? names[0].charAt(0) + ". " + names[1].substring(0, Math.min(names[1].length(), nameLength)) : names[0];
+            String name = (names.length == 2) ? names[0].charAt(0) + ". " + names[1].substring(0, Math.min(names[1].length(), nameLength)) : names[0];
             builder.append(name).append(", ");
         }
 
-        return builder.substring(0, builder.length()-2);
+        return builder.substring(0, builder.length() - 2);
     }
 
     /**
