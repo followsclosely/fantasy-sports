@@ -69,7 +69,6 @@ public class ValueLineupGenerator implements RosterGenerator {
             int limit = rosterSettings.getLimit(position);
             int need = limit - count;
 
-            //System.out.println( position + " : " + count + "/" + limit + " need=" + need );
             if (need > 0) {
                 List<Player> players = pool.getPlayers(position).filter(p -> roster.canAddPlayer(p).isPresent()).collect(Collectors.toList());
 
