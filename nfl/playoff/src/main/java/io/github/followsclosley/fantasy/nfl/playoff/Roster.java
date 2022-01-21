@@ -52,7 +52,7 @@ public class Roster {
      */
     public Optional<Position> canAddPlayer(Player player) {
 
-        if( player == null) {
+        if (player == null) {
             return Optional.empty();
         }
 
@@ -105,6 +105,10 @@ public class Roster {
         return this;
     }
 
+    public boolean isFull() {
+        return players.size() >= rosterSettings.getSize();
+    }
+
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
@@ -112,10 +116,24 @@ public class Roster {
 
         List<Player> players = new ArrayList<>(this.players);
         for (Player player : players) {
-            builder.append(player.getName()).append(" (").append(player.getPoints()).append(")\t");
+            builder.append(player.getName(), 0, Math.min(player.getName().length(), 15)).append(" (").append(player.getPoints()).append(") ");
         }
 
         return builder.toString();
+    }
+
+    public String toString(int nameLength) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Points: ").append(String.format("%.2f", points)).append("\t");
+
+        List<Player> players = new ArrayList<>(this.players);
+        for (Player player : players) {
+            String[] names = player.getName().split(" ");
+            String name = (names.length==2) ? names[0].charAt(0) + ". " + names[1].substring(0, Math.min(names[1].length(), nameLength)) : names[0];
+            builder.append(name).append(", ");
+        }
+
+        return builder.substring(0, builder.length()-2);
     }
 
     /**

@@ -6,7 +6,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -55,6 +54,7 @@ public class BruteForceLineupGenerator implements RosterGenerator {
         List<Player> fxs = pool.getPlayers("RB", "WR", "TE").limit(limit).collect(Collectors.toList());
         List<Player> ks = pool.getPlayers("K").limit(limit).collect(Collectors.toList());
         List<Player> ds = pool.getPlayers("D").limit(limit).collect(Collectors.toList());
+
 
         ArrayList<Roster> sortedRosters = new ArrayList<>();
         Set<String> unique = new HashSet<>();

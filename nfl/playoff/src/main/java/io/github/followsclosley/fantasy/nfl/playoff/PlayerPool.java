@@ -1,9 +1,7 @@
 package io.github.followsclosley.fantasy.nfl.playoff;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -30,6 +28,17 @@ public class PlayerPool {
 
     public Stream<Player> getPlayers(Position position) {
         Stream<Player> stream = pool.stream().filter(position);
-        return (position.getPositions().size() == 1) ? stream : stream.sorted(Comparator.comparingDouble(Player::getPoints).reversed());
+
+        //If there is more than one position:
+        // 1) Group by team
+        // 2) select the max points scored
+        // 3) Sort by points scored
+        if( position.getPositions().size() > 1){
+            stream = stream.collect(Collectors.groupingBy(Player::getTeam, Collectors.maxBy(Comparator.comparingDouble(Player::getPoints))))
+                    .values().stream().flatMap(Optional::stream)
+                    .sorted(Comparator.comparingDouble(Player::getPoints).reversed());
+        }
+
+        return stream;
     }
 }

@@ -14,9 +14,11 @@ fantasy:
         "D": 1
     roster-generator:
       brute-force:
-        debug: false
+        debug: true
         number-to-return: 5
+      brute-recursive:
+        debug: true
       max-points:
-        debug: false
+        debug: true
       value:
         debug: true

@@ -4,9 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Contains all the settings needed to generate an optimal roster.
@@ -40,5 +38,15 @@ public class RosterSettings {
         for (Map.Entry<String, Integer> entry : config.entrySet()) {
             this.limits.put(new Position(entry.getKey().split(",")), entry.getValue());
         }
+    }
+
+    public List<Position> getPositionArray(boolean expanded) {
+        List<Position> positions = new ArrayList<>(size);
+        limits.forEach((p, v) -> {
+            for (int i = 0, length = expanded ? getLimit(p) : 1; i < length; i++) {
+                positions.add(p);
+            }
+        });
+        return positions;
     }
 }
