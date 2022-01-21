@@ -57,7 +57,7 @@ public class BruteRecursiveRosterGenerator implements RosterGenerator {
             List<Player> players = context.playerPools.get(positionToFill);
             for (Player player : players) {
                 if (roster.canAddPlayer(player).isPresent()) {
-                    tryAllPlayersAtThisDepth(context, roster.addPlayerAndClone(player), depth + 1);
+                    tryAllPlayersAtThisDepth(context, roster.cloneAndAdd(player), depth + 1);
                 }
             }
         }

@@ -62,28 +62,28 @@ public class BruteForceLineupGenerator implements RosterGenerator {
             roster.addPlayer(qb);
             for (Player rb1 : rbs) {
                 if (roster.canAddPlayer(rb1).isPresent()) {
-                    Roster rosterRb1 = roster.addPlayerAndClone(rb1);
+                    Roster rosterRb1 = roster.cloneAndAdd(rb1);
                     for (Player rb2 : rbs) {
                         if (rosterRb1.canAddPlayer(rb2).isPresent()) {
-                            Roster rosterRb2 = rosterRb1.addPlayerAndClone(rb2);
+                            Roster rosterRb2 = rosterRb1.cloneAndAdd(rb2);
                             for (Player wr1 : wrs) {
                                 if (rosterRb2.canAddPlayer(wr1).isPresent()) {
-                                    Roster rosterWr1 = rosterRb2.addPlayerAndClone(wr1);
+                                    Roster rosterWr1 = rosterRb2.cloneAndAdd(wr1);
                                     for (Player wr2 : wrs) {
                                         if (rosterWr1.canAddPlayer(wr2).isPresent()) {
-                                            Roster rosterWr2 = rosterWr1.addPlayerAndClone(wr2);
+                                            Roster rosterWr2 = rosterWr1.cloneAndAdd(wr2);
                                             for (Player te : tes) {
                                                 if (rosterWr2.canAddPlayer(te).isPresent()) {
-                                                    Roster rosterTe = rosterWr2.addPlayerAndClone(te);
+                                                    Roster rosterTe = rosterWr2.cloneAndAdd(te);
                                                     for (Player pk : ks) {
                                                         if (rosterTe.canAddPlayer(pk).isPresent()) {
-                                                            Roster rosterPk = rosterTe.addPlayerAndClone(pk);
+                                                            Roster rosterPk = rosterTe.cloneAndAdd(pk);
                                                             for (Player dt : ds) {
                                                                 if (rosterPk.canAddPlayer(dt).isPresent()) {
-                                                                    Roster rosterDt = rosterPk.addPlayerAndClone(dt);
+                                                                    Roster rosterDt = rosterPk.cloneAndAdd(dt);
                                                                     for (Player fx : fxs) {
                                                                         if (rosterDt.canAddPlayer(fx).isPresent()) {
-                                                                            Roster rosterFx = rosterDt.addPlayerAndClone(fx);
+                                                                            Roster rosterFx = rosterDt.cloneAndAdd(fx);
                                                                             if ( bestRoster == null || bestRoster.getPoints() < rosterFx.getPoints()){
                                                                                 bestRoster = rosterFx;
                                                                             }

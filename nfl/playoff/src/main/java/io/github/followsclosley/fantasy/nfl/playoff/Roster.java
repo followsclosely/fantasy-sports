@@ -87,9 +87,7 @@ public class Roster {
         if (optionalPosition.isPresent()) {
             points += player.getPoints();
             players.add(player);
-
-            Position position = optionalPosition.get();
-            counts.get(position).incrementAndGet();
+            counts.get(optionalPosition.get()).incrementAndGet();
         }
 
         return optionalPosition;
@@ -154,20 +152,29 @@ public class Roster {
         return builder.toString();
     }
 
+
+
     /**
-     * Adds a player and clones the Roster.
+     * Clones the roster and adds player after the clone
      *
-     * @return a clone of itself
+     * @param player players to add after cloning
+     *
+     * @return a new clone
      */
-    public Roster addPlayerAndClone(Player player) {
+    public Roster cloneAndAdd(Player... player) {
         Roster roster = new Roster(rosterSettings);
         roster.players.addAll(players);
         roster.points = points;
 
         counts.forEach((key, value) -> roster.counts.put(key, new AtomicInteger(value.get())));
-        roster.addPlayer(player);
+
+        if( player != null){
+            Arrays.stream(player).forEach(p -> roster.addPlayer(p));
+        }
+
         return roster;
     }
+
 
     /**
      * Getter for fantasy points scored by this roster.
