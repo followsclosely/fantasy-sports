@@ -66,7 +66,12 @@ public class BruteRecursiveRosterGenerator implements RosterGenerator {
     }
 
     /**
-     * Class to hold all the state needed to make the recursive call. This is so that this class can be thread safe.
+     * Class to hold all the state needed to make the recursive call.
+     *
+     * <p>
+     *     This inner class is used and passed in the recursive
+     *     method so that the RosterGenerator class can be thread safe.
+     * </p>
      */
     public static class Context {
         //Holds all the positions of the roster expanding so that ever recursive depth has a position to work with.
