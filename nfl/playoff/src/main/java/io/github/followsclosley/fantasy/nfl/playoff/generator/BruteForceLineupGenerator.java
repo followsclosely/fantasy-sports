@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -84,7 +86,7 @@ public class BruteForceLineupGenerator implements RosterGenerator {
                                                                     for (Player fx : fxs) {
                                                                         if (rosterDt.canAddPlayer(fx).isPresent()) {
                                                                             Roster rosterFx = rosterDt.cloneAndAdd(fx);
-                                                                            if ( bestRoster == null || bestRoster.getPoints() < rosterFx.getPoints()){
+                                                                            if (bestRoster == null || bestRoster.getPoints() < rosterFx.getPoints()) {
                                                                                 bestRoster = rosterFx;
                                                                             }
                                                                         }

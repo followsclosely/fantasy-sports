@@ -37,9 +37,8 @@ public class BruteRecursiveRosterGenerator implements RosterGenerator {
      * itself for the next level down.
      *
      * @param context Holds the players and position at each depth
-     * @param roster Current roster being simulated
-     * @param depth the recursion depth and also the index of the roster position being filled
-     *
+     * @param roster  Current roster being simulated
+     * @param depth   the recursion depth and also the index of the roster position being filled
      * @return the Context used
      */
     public Context tryAllPlayersAtThisDepth(Context context, Roster roster, int depth) {
@@ -69,8 +68,8 @@ public class BruteRecursiveRosterGenerator implements RosterGenerator {
      * Class to hold all the state needed to make the recursive call.
      *
      * <p>
-     *     This inner class is used and passed in the recursive
-     *     method so that the RosterGenerator class can be thread safe.
+     * This inner class is used and passed in the recursive
+     * method so that the RosterGenerator class can be thread safe.
      * </p>
      */
     public static class Context {

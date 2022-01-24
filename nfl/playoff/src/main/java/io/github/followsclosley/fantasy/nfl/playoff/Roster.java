@@ -153,12 +153,10 @@ public class Roster {
     }
 
 
-
     /**
      * Clones the roster and adds player after the clone
      *
      * @param player players to add after cloning
-     *
      * @return a new clone
      */
     public Roster cloneAndAdd(Player... player) {
@@ -168,8 +166,8 @@ public class Roster {
 
         counts.forEach((key, value) -> roster.counts.put(key, new AtomicInteger(value.get())));
 
-        if( player != null){
-            Arrays.stream(player).forEach(p -> roster.addPlayer(p));
+        if (player != null) {
+            Arrays.stream(player).forEach(roster::addPlayer);
         }
 
         return roster;

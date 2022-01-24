@@ -48,7 +48,14 @@ public class PlayerPoolLoader {
                 if (!line.startsWith("#")) // Comment out players with a #
                 {
                     String[] values = line.split(",");
-                    allPlayers.add(new Player(String.valueOf(i++), values[0], Float.parseFloat(values[3]), values[2], values[1]));
+
+                    //String id, String name, float points, String position, String team
+                    //2022,Patrick Mahomes,KC,QB,47.06
+                    int year = Integer.parseInt(values[0]);
+
+                    if (year == 2022) {
+                        allPlayers.add(new Player(String.valueOf(i++), values[1], Float.parseFloat(values[4]), values[3], values[2]));
+                    }
                 }
             }
         }
