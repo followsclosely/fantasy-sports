@@ -53,7 +53,7 @@ public class PlayerPoolLoader {
                     //2022,Patrick Mahomes,KC,QB,47.06
                     int year = Integer.parseInt(values[0]);
 
-                    if (year == 2024) {
+                    if (year == 2025) {
                         allPlayers.add(new Player(String.valueOf(i++), values[1], Float.parseFloat(values[4]), values[3], values[2]));
                     }
                 }
